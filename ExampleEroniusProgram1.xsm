@@ -1,0 +1,18 @@
+.main
+	MOV R0, #0
+	MOV R1, #5
+	MOV R2, #1
+	JMP .loop
+.loop
+	MOV S0, "Iteration Number"
+	PRT S0
+	PRT R0
+	ADD R0, R2
+	MOV R0, A0
+	CMP R0, R1
+	JLT .loop
+	JMP .end
+.end
+	MOV S0, "Program Ends Execution"
+	PRT S0
+
