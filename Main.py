@@ -1,4 +1,5 @@
 import ScriptAssembler as Assembler
+import InstructionExecuter as IExecuter
 import time
 import customtkinter
 import tkinter
@@ -30,7 +31,7 @@ class TerminalFrame(customtkinter.CTkFrame):
                 try:
                     FullString = Line[4:]
                     for Character in FullString:
-                        self.AppendText(Assembler.IntToBinary(ord(Character)))
+                        self.AppendText(IExecuter.IntToBinary(ord(Character)))
                 except Exception as e:
                     self.AppendText(e)
             elif Check2 == "HASH":
