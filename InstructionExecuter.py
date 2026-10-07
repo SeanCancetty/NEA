@@ -44,6 +44,7 @@ Registers = [
     0
 ]
 
+#Initialises Memory array, Registers array and sets the Condition Flag
 def init():
     global Memory
     Memory = []
@@ -58,6 +59,7 @@ def init():
         0
     ]
 
+#Determines which Operator is being executed, passes in the operands, then returns the result of the executed line
 def Execute(Operator, Operand1, Operand2 = None):
     ReturnValue = 0
     if Operator in StandaloneOperators:
@@ -90,6 +92,7 @@ def Execute(Operator, Operand1, Operand2 = None):
         ReturnValue = "!::!" + Operator
     return ReturnValue
 
+#Converts integer values to binary strings
 def IntToBinary(number):
     number = int(number)
     binary = ""
@@ -102,6 +105,7 @@ def IntToBinary(number):
             binary += "0"
     return binary
 
+#Converts binary strings to integer values
 def BinaryToInt(binary):
     FullBinary = binary
     FullBinary = list(FullBinary)
@@ -110,12 +114,14 @@ def BinaryToInt(binary):
         ReturnBinary += FullBinary.pop(-1)
     return int(ReturnBinary[::-1], 2)
 
+#Sets the value held at index of Registers associated with the given register to the given data
 def SetRegister(register, data):
     if register == "ACC" or "A" in register[0]:
         register = "A0"
     if len(register) > 2:
         return "!::!" + register
 
+    #Finds the associated index by checking the first character of the given register
     try:
         match register[0]:
             case "R":
@@ -128,12 +134,14 @@ def SetRegister(register, data):
     except Exception as e:
         return "!::!" + data
 
+#Returns the value held at index of Registers associated with the given register
 def GetRegister(register: str):
     if register == "ACC" or "A" in register[0]:
         register = "A0"
     if len(register) > 2:
         return 0
 
+    #Finds the given register's index
     match register[0]:
         case "R":
             return Registers[int(register[1])]
@@ -143,10 +151,12 @@ def GetRegister(register: str):
             return Registers[int(register[1]) + 13]
     return 0
 
+#Sets the value at the provided memory address to the value found in the provided register
 def LDR(register, address):
     ReturnValue = SetRegister(register, Memory[address])
     return ReturnValue
 
+#Sets the value in the provided register to the value found at the provided memory address
 def STR(register, address: int):
     if GetRegister(register) is not None and address < len(Memory):
         Memory[address] = GetRegister(register)
@@ -154,24 +164,31 @@ def STR(register, address: int):
     else:
         return "!::!" + str(address) + "¦" + register
 
+#Determines which operation to perform on the given registers
 def MATH(operation, register1, register2):
     if GetRegister(register1) is None or GetRegister(register2) is None:
         return "!::!" + register1 + "¦" + register2
     match operation:
+        #Performs an add operation on the first given register and second given register, and stores the result in the accumulator
         case "ADD":
             SetRegister("A0", (GetRegister(register1) + GetRegister(register2)))
             return "|::|"
+        #Performs a Subtraction operation on the first given register and second given register, and stores the result in the accumulator
         case "SUB":
             SetRegister("A0", (GetRegister(register1) - GetRegister(register2)))
             return "|::|"
+        #Performs a Multiplication operation on the first given register and second given register, and stores the result in the accumulator
         case "MUL":
             SetRegister("A0", (GetRegister(register1) * GetRegister(register2)))
             return "|::|"
+        #Performs a Division operation on the first given register and second given register, and stores the result in the accumulator
         case "DIV":
             SetRegister("A0", (GetRegister(register1) / GetRegister(register2)))
             return "|::|"
+        #Returns an error if the provided Operation matches non of the four
         case _:
             return "!::!" + operation
+
 
 def MOV(register, data):
     if isinstance(data, str):
