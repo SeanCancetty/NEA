@@ -1,3 +1,5 @@
+from textwrap import wrap
+
 import ScriptAssembler as Assembler
 import InstructionExecuter as IExecuter
 import time
@@ -12,7 +14,7 @@ UploadPath = ""
 class TerminalFrame(customtkinter.CTkFrame):
     def __init__(self, master):
         super().__init__(master)
-        self.Textbox = customtkinter.CTkTextbox(self, height=240, width=240)
+        self.Textbox = customtkinter.CTkTextbox(self, height=240, width=240, border_color="#AAAAAA", border_width=2)
         self.Textbox.grid(column=0, row=0, sticky="nsew")
         #Ensures the user can't edit displayed text
         self.Textbox.configure(state="disabled")
@@ -78,11 +80,11 @@ class MemoryFrame(customtkinter.CTkFrame):
     def __init__(self, Window: customtkinter.CTk):
         super().__init__(Window)
         self.configure(height=720, width=230)
-        self.Textbox = customtkinter.CTkTextbox(self, height=600, width=115)
+        self.Textbox = customtkinter.CTkTextbox(self, height=600, width=115, border_color="#AAAAAA", border_width=2)
         self.Textbox.grid(column=0, row=0, sticky="nsew")
         self.Textbox.configure(state="disabled")
 
-        self.Mem = customtkinter.CTkTextbox(self, height=600, width=115)
+        self.Mem = customtkinter.CTkTextbox(self, height=600, width=115, border_color="#AAAAAA", border_width=2)
         self.Mem.grid(column=1, row=0, sticky="nsew")
         self.Mem.configure(state="disabled")
 
@@ -123,7 +125,7 @@ class RegisterDisplay:
 #File Editor class
 class FileEditor:
     def __init__(self, Window: customtkinter.CTk):
-        self.Textbox = customtkinter.CTkTextbox(Window, height=720, width=650)
+        self.Textbox = customtkinter.CTkTextbox(Window, height=720, width=650, border_color="#AAAAAA", border_width=2, wrap="none")
         self.Textbox.insert(0.0,'.main\n\tMOV S0, "Hello, World!"\n\tPRT S0\n\tJMP .label\n.label\n\tMOV S0, "Stupid"\n\tPRT S0')
         self.Textbox.grid(column=1, row=1)
 
